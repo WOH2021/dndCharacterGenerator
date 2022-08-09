@@ -4,16 +4,16 @@
  *
  *  Contains the information about a single DnD character.
  * 	Each character has:
- *  - class
- *  - race
+ *  	- class
+ *  	- race
  * 	- six ability scores: strength, dexterity, constitution, intelligence, wisdom, charisma
  * 	- ability modifier
  * 	- hitpoints
  * 	- class
  *
- * 	@author						Lina Blijleven, Luuk Verhage
+ *  @author			Lina Blijleven, Luuk Verhage
  *  @documentation		public
- *  @copyright				ITPH? CodeCafé? 2022
+ *  @copyright			ITPH? CodeCafé? 2022
  */
 // Autoload the related classes
 require_once('autoload.php');
@@ -47,13 +47,13 @@ Class Character
 	// Store the money
 	private $funds;
 
-	/**
-   *  Constructor
+   /**
+   *    Constructor
    * 
    * 	@param	string	Class name
-   *  @param	string	Race name
+   *    @param	string	Race name
    *	@param	string	Alignment
-	 *  @param	string	Background
+   *    @param	string	Background
    */
 	public function __construct($cClass = null, $cRace = null, $cAlignment = null, $cBackground = null)
 	{
@@ -75,12 +75,9 @@ Class Character
 		$this->setBackground($cBackground);
 		
 		// Roll for the ability scores
-		do 
-		{ 
+		do { 
 			$this->setAbilityScores(); 
-		} 
-		// Re-roll if the ability scores don't match class requirements
-		while (!$this->cClass->validAbilityScores($this->abilityScores));
+		} while (!$this->cClass->validAbilityScores($this->abilityScores)); // Re-roll if the ability scores don't match class requirements
 
 		// Set the initial HP associated with the class
 		$baseHP = $this->cClass->initialHP();
@@ -94,22 +91,23 @@ Class Character
 	}
 	
 	/**
-   *  Create the abilities, ability modifiers and hitpoints.
+         *  Create the abilities, ability modifiers and hitpoints.
 	 */
+	
 	protected function setAbilityScores()
 	{
-			// Roll for the ability scores
-			$this->abilityScores = array(
-				'strength' 			=> $this->abilityScore(),
+	    // Roll for the ability scores
+	    $this->abilityScores = array(
+				'strength' 		=> $this->abilityScore(),
 				'dexterity' 		=> $this->abilityScore(),
-				'constitution'	=> $this->abilityScore(),
-				'intelligence'	=> $this->abilityScore(),
-				'wisdom' 				=> $this->abilityScore(),
-				'charisma' 			=> $this->abilityScore()
-			);
+				'constitution'		=> $this->abilityScore(),
+				'intelligence'		=> $this->abilityScore(),
+				'wisdom' 		=> $this->abilityScore(),
+				'charisma' 		=> $this->abilityScore()
+	    			);
 	}
 
-	/**
+  /**
    *  Get the character class
    *
    *  @return	string
@@ -120,7 +118,7 @@ Class Character
 			return $this->cClass->getClass();
 	}
 	
-	/**
+  /**
    *  Return a description for the class
    *  
    *  @return string
@@ -131,17 +129,17 @@ Class Character
 			return $this->cClass->classDescription();
 	}
 
-	/**
+  /**
    *  Return the race of the character
    * 
-   * 	@return	Race		A child class of Race
+   * @return Race A child class of Race
    */
 	private function getRace() : Race
 	{
 		return $this->race;
 	}
 
-	/**
+  /**
    *  Return the race name
    * 
    *  @return string
@@ -151,7 +149,7 @@ Class Character
 		return $this->race->raceName();
 	}
 
-	/**
+  /**
    *  Return the sub race name
    * 
    *  @return string
@@ -164,7 +162,7 @@ Class Character
 	/* 
 	 * Helper function 
 	 *
-   * @param		int
+         * @param	int
 	 * @return	int
 	 */
 	private function getModifier(int $skill) : int
@@ -192,7 +190,7 @@ Class Character
 	    return array_sum($fourrandom);
 	}
 
-	/**
+  /**
    *  Get the background of the character
    */
 	private function getBackground() : Background
@@ -200,11 +198,11 @@ Class Character
 		return $this->background;
 	}
 
-	/**
+  /**
    *  Create a background for our character
    *  
    *	@param	string	Background specifier
-	 */
+   */
 	private function setBackground($background)
 	{
 		// @todo Check if the given background is valid
@@ -213,7 +211,7 @@ Class Character
 		$this->background = new $background();
 	}
 
-	/** 
+  /** 
    *	Getters for the background info
    */
 	public function getBackgroundName() : string { return $this->getBackground()->name(); }
@@ -222,11 +220,11 @@ Class Character
 	public function getBackgroundBond() : string { return $this->getBackground()->getCharacteristics()['bond']; }
 	public function getBackgroundFlaw() : string { return $this->getBackground()->getCharacteristics()['flaw']; }
 
-	/**
+  /**
    *	Set the initial hp
    *
    *	@param	int		base hp
-	 */
+   */
 	private function setInitialHP($baseHP)
 	{
 		// Calculate the HP based on the base hp, 
@@ -251,7 +249,7 @@ Class Character
 		$this->proficiencies = array_merge($bgProficiencies, $cProficiencies);
 	}
 
-	/**
+  /**
    *  Set the initial proficiencies
    */
 	private function setInitialEquipment()
@@ -266,7 +264,7 @@ Class Character
 		$this->equipment = array_merge($bgEquipment, $cEquipment);
 	}
 
-	/**
+  /**
    *  Set the initial amount of money
    */
 	private function setInitialFunds()
@@ -275,7 +273,7 @@ Class Character
 		$this->funds = $this->getBackground()->getInitialFunds();
 	}
 
-	/**
+  /**
    *  Simple getters for character properties
    */
 	public function getHP() : int { return $this->hp; }
@@ -284,7 +282,7 @@ Class Character
 	public function getEquipment() : array { return $this->equipment; }
 	public function getFunds() : array { return $this->funds; }
 
-	/**
+  /**
    *	Set the alignment if it is valid
    */
 	public function setAlignment(string $align)
@@ -300,7 +298,7 @@ Class Character
 		return $this;
 	}
 
-	/**
+  /**
    *  Set the current hp
    * 
    *  @param		int		The new value for the HP
@@ -313,8 +311,8 @@ Class Character
 		// Allow chaining
 		return $this;
 	}
-
-	/** 
+	
+  /** 
    *  Modify hp
    *  Subtract or add a certain amount of hitpoints from the current HP
    *
@@ -333,7 +331,7 @@ Class Character
 		return $this;
 	}
 
-	/**
+  /**
    *  Get the base abilities EXCLUDING the modifiers
    */
  	public function getBaseStrength() : int { return $this->abilityScores['strength']; }
@@ -343,11 +341,11 @@ Class Character
 	public function getBaseWisdom() : int { return $this->abilityScores['wisdom']; }
 	public function getBaseCharisma() : int { return $this->abilityScores['charisma']; }
 
-	/**
+  /**
    *  Get the strength including the modifiers
-	 * 
-	 *  @return int
-	 */
+   * 
+   *  @return int
+   */
 	public function getStrength() : int
 	{
 		$base = $this->abilityScores['strength'];
@@ -356,11 +354,11 @@ Class Character
 		return $base + $raceModifier;
 	}
 
-	/**
+  /**
    *  Get the dexterity
-	 * 
-	 *  @return int
-	 */
+   * 
+   *  @return int
+   */
 	public function getDexterity() : int
 	{
 		$base = $this->abilityScores['dexterity'];
@@ -369,11 +367,11 @@ Class Character
 		return $base + $raceModifier;
 	}
 
-	/**
+  /**
    *  Get the constitution
-	 * 
-	 *  @return int
-	 */
+   * 
+   *  @return int
+   */
 	public function getConstitution() : int
 	{
 		$base = $this->abilityScores['constitution'];
@@ -383,7 +381,7 @@ Class Character
 	}
 
 	/**
-   *  Get the intelligence
+   	 *  Get the intelligence
 	 * 
 	 *  @return int
 	 */
@@ -396,7 +394,7 @@ Class Character
 	}
 
 	/**
-   *  Get the wisdom
+	 *  Get the wisdom
 	 * 
 	 *  @return int
 	 */
@@ -409,7 +407,7 @@ Class Character
 	}
 
 	/**
-   *  Get the charisma
+	 *  Get the charisma
 	 * 
 	 *  @return int
 	 */
@@ -422,7 +420,7 @@ Class Character
 	}
 
 	/**
-   *  Get the strength modifier
+	 *  Get the strength modifier
 	 * 
 	 *  @return int
 	 */
@@ -434,7 +432,7 @@ Class Character
 	}
 
 	/**
-   *  Get the dexterity modifier
+	 *  Get the dexterity modifier
 	 * 
 	 *  @return int
 	 */
@@ -446,7 +444,7 @@ Class Character
 	}
 
 	/**
-   *  Get the constitution modifier
+	 *  Get the constitution modifier
 	 * 
 	 *  @return int
 	 */
@@ -458,7 +456,7 @@ Class Character
 	}
 
 	/**
-   *  Get the intelligence modifier
+	 *  Get the intelligence modifier
 	 * 
 	 *  @return int
 	 */
@@ -470,7 +468,7 @@ Class Character
 	}
 
 	/**
-   *  Get the wisdom modifier
+	 *  Get the wisdom modifier
 	 * 
 	 *  @return int
 	 */
@@ -482,7 +480,7 @@ Class Character
 	}
 
 	/**
-   *  Get the charisma modifier
+	 *  Get the charisma modifier
 	 * 
 	 *  @return int
 	 */
